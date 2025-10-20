@@ -15,7 +15,7 @@
  */
 
 @SuppressWarnings(
-	'PMD.ApexDoc, PMD.CyclomaticComplexity, PMD.ApexUnitTestClassShouldHaveRunAs'
+	'PMD.ApexDoc,PMD.CyclomaticComplexity,PMD.ApexUnitTestClassShouldHaveRunAs'
 )
 @IsTest(isParallel=true)
 private class MetadataTriggerHandlerTest {
@@ -629,6 +629,37 @@ private class MetadataTriggerHandlerTest {
 			MetadataTriggerHandler.bypassedActions.size(),
 			BYPASSES_SHOULD_BE_CONFIGURED_PROPERLY
 		);
+	}
+
+	@IsTest
+	private static void bypassWithTypeShouldSucceed() {
+		MetadataTriggerHandler.bypass(TestBeforeInsert.class);
+
+		System.Assert.isTrue(
+			MetadataTriggerHandler.bypassedActions.contains(TEST_BEFORE_INSERT),
+			BYPASSES_SHOULD_BE_CONFIGURED_PROPERLY
+		);
+	}
+
+	@IsTest
+	private static void clearBypassWithTypeShouldSucceed() {
+		MetadataTriggerHandler.bypass(TestBeforeInsert.class);
+		MetadataTriggerHandler.clearBypass(TestBeforeInsert.class);
+
+		System.Assert.isFalse(
+			MetadataTriggerHandler.bypassedActions.contains(TEST_BEFORE_INSERT),
+			BYPASSES_SHOULD_BE_CONFIGURED_PROPERLY
+		);
+	}
+
+	@IsTest
+	private static void isBypassedWithTypeShouldSucceed() {
+		Boolean isBypassed;
+		MetadataTriggerHandler.bypass(TestBeforeInsert.class);
+
+		isBypassed = MetadataTriggerHandler.isBypassed(TestBeforeInsert.class);
+
+		System.Assert.isTrue(isBypassed, BYPASSES_SHOULD_BE_CONFIGURED_PROPERLY);
 	}
 
 	@IsTest

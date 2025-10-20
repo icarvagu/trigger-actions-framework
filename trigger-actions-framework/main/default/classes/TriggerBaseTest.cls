@@ -14,7 +14,9 @@
    limitations under the License.
  */
 
-@SuppressWarnings('PMD.ApexDoc, PMD.ApexUnitTestClassShouldHaveRunAs')
+@SuppressWarnings(
+	'PMD.ApexDoc,PMD.CyclomaticComplexity,PMD.ApexUnitTestClassShouldHaveRunAs'
+)
 @IsTest(isParallel=true)
 private class TriggerBaseTest {
 	private static final String ACCOUNT = 'Account';
@@ -291,6 +293,38 @@ private class TriggerBaseTest {
 		System.Assert.areEqual(
 			0,
 			TriggerBase.bypassedObjects.size(),
+			BYPASSES_SHOULD_BE_CONFIGURED_CORRECTLY
+		);
+	}
+
+	@IsTest
+	private static void bypassWithSObjectTypeShouldSucceed() {
+		TriggerBase.bypass(Schema.Account.SObjectType);
+
+		System.Assert.isTrue(
+			TriggerBase.bypassedObjects.contains(ACCOUNT),
+			BYPASSES_SHOULD_BE_CONFIGURED_CORRECTLY
+		);
+	}
+
+	@IsTest
+	private static void clearBypassWithSObjectTypeShouldSucceed() {
+		TriggerBase.bypass(Schema.Account.SObjectType);
+
+		TriggerBase.clearBypass(Schema.Account.SObjectType);
+
+		System.Assert.isFalse(
+			TriggerBase.bypassedObjects.contains(ACCOUNT),
+			BYPASSES_SHOULD_BE_CONFIGURED_CORRECTLY
+		);
+	}
+
+	@IsTest
+	private static void isBypassedWithSObjectTypeShouldSucceed() {
+		TriggerBase.bypass(Schema.Account.SObjectType);
+
+		System.Assert.isTrue(
+			TriggerBase.isBypassed(Schema.Account.SObjectType),
 			BYPASSES_SHOULD_BE_CONFIGURED_CORRECTLY
 		);
 	}
