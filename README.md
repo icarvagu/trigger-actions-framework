@@ -242,15 +242,13 @@ You can bypass all actions on an sObject as well as specific Apex or Flow action
 
 #### Bypass from Apex
 
-The framework provides compile-safe bypass methods that accept type references.
-
-**Bypass sObjects using Schema.sObjectType:**
+**Bypass Triggers Using the sObject API Name**
 
 ```java
 public void updateAccountsNoTrigger(List<Account> accountsToUpdate) {
-  TriggerBase.bypass(Schema.Account.SObjectType);
+  TriggerBase.bypass('Account');
   update accountsToUpdate;
-  TriggerBase.clearBypass(Schema.Account.SObjectType);
+  TriggerBase.clearBypass('Account');
 }
 ```
 
